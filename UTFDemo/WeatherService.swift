@@ -50,7 +50,7 @@ struct WeatherService: WeatherServiceable {
             }
             
             do {
-                let weatherData = try JSONDecoder().decode(WeatherData.self, from: data)
+                let weatherData = try JSONDecoder().decode(Weather.self, from: data)
                 completion(.success(weatherData.main.temp))
             } catch {
                 completion(.failure(.jsonParsingError))
