@@ -69,9 +69,9 @@ final class WeatherViewModelTests: XCTestCase {
 
 private class WeatherServiceMock: WeatherServiceable {
     var cityParameterLastCall: String?
-    var result: Result<Double, UTFDemo.WeatherDataError>?
+    var result: Result<Double, UTFDemo.WeatherError>?
     
-    func getTemperatureFromCity(_ cityName: String, completion: @escaping (Result<Double, UTFDemo.WeatherDataError>) -> Void) {
+    func getTemperatureFromCity(_ cityName: String, completion: @escaping (Result<Double, UTFDemo.WeatherError>) -> Void) {
         cityParameterLastCall = cityName // it spies on this one
         completion(result!)
     }

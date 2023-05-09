@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum WeatherDataError: Error {
+enum WeatherError: Error {
     case invalidURL
     case invalidResponse
     case noData
@@ -15,7 +15,7 @@ enum WeatherDataError: Error {
 }
 
 protocol WeatherServiceable {
-    func getTemperatureFromCity(_ cityName: String, completion: @escaping (Result<Double, WeatherDataError>) -> Void)
+    func getTemperatureFromCity(_ cityName: String, completion: @escaping (Result<Double, WeatherError>) -> Void)
 }
 
 struct WeatherService: WeatherServiceable {
@@ -25,7 +25,7 @@ struct WeatherService: WeatherServiceable {
         self.session = session
     }
     
-    func getTemperatureFromCity(_ cityName: String, completion: @escaping (Result<Double, WeatherDataError>) -> Void) {
+    func getTemperatureFromCity(_ cityName: String, completion: @escaping (Result<Double, WeatherError>) -> Void) {
         let weatherApiUrl = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(cityName)&units=metric&appid=\(APIKeys.weather.rawValue)")
         
         guard let weatherApiUrl = weatherApiUrl else {

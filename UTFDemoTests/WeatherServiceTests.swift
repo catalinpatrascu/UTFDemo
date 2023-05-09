@@ -26,53 +26,53 @@ final class WeatherServiceTests: XCTestCase {
 
     func test_getTemperatureFromCity_returnsInvalidURLFromBadURL() {
         // GIVEN
-        var result: Result<Double, WeatherDataError>?
+        var result: Result<Double, WeatherError>?
         
         // WHEN
         sut.getTemperatureFromCity("city name with spaces resulting in bad url without escaping characters") { result = $0 }
         
         // THEN
-        XCTAssertEqual(result, .failure(WeatherDataError.invalidURL))
+        XCTAssertEqual(result, .failure(WeatherError.invalidURL))
     }
     
     func test_getTemperatureFromCity_returnsInvalidURLFromSession() {
         // GIVEN
-        var result: Result<Double, WeatherDataError>?
-        mockSession.error = WeatherDataError.invalidURL
+        var result: Result<Double, WeatherError>?
+        mockSession.error = WeatherError.invalidURL
         
         // WHEN
         sut.getTemperatureFromCity(dummyCity) { result = $0 }
         
         // THEN
-        XCTAssertEqual(result, .failure(WeatherDataError.invalidURL))
+        XCTAssertEqual(result, .failure(WeatherError.invalidURL))
     }
     
     func test_getTemperatureFromCity_returnsInvalidResponse() {
         // GIVEN
-        var result: Result<Double, WeatherDataError>?
+        var result: Result<Double, WeatherError>?
         mockSession.statusCode = 403
         
         // WHEN
         sut.getTemperatureFromCity(dummyCity) { result = $0 }
         
         // THEN
-        XCTAssertEqual(result, .failure(WeatherDataError.invalidResponse))
+        XCTAssertEqual(result, .failure(WeatherError.invalidResponse))
     }
     
     func test_getTemperatureFromCity_returnsNoData() {
         // GIVEN
-        var result: Result<Double, WeatherDataError>?
+        var result: Result<Double, WeatherError>?
         
         // WHEN
         sut.getTemperatureFromCity(dummyCity) { result = $0 }
         
         // THEN
-        XCTAssertEqual(result, .failure(WeatherDataError.noData))
+        XCTAssertEqual(result, .failure(WeatherError.noData))
     }
         
     func test_getTemperatureFromCity_returnsJsonParsingError() {
         // GIVEN
-        var result: Result<Double, WeatherDataError>?
+        var result: Result<Double, WeatherError>?
         mockSession.data = """
         {
             "name1": "\(dummyCity)",
@@ -84,12 +84,12 @@ final class WeatherServiceTests: XCTestCase {
         sut.getTemperatureFromCity(dummyCity) { result = $0 }
         
         // THEN
-        XCTAssertEqual(result, .failure(WeatherDataError.jsonParsingError))
+        XCTAssertEqual(result, .failure(WeatherError.jsonParsingError))
     }
     
     func test_getTemperatureFromCity_returnsValidData() {
         // GIVEN
-        var result: Result<Double, WeatherDataError>?
+        var result: Result<Double, WeatherError>?
         mockSession.data = """
         {
             "name": "London",
