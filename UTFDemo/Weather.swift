@@ -7,19 +7,37 @@
 
 import Foundation
 
-struct Weather: Decodable {
+struct Weather {
     let name: String
     let main: Main
 }
 
-struct Main: Decodable {
+struct Main {
     let temp: Double
     let humidity: Int
 }
 
-enum WeatherDataMapper {
+// Networking mapping
+enum WeatherMapper {
     static func map(dataJSON: Data) -> Weather? {
-        let weatherData = try? JSONDecoder().decode(Weather.self, from: dataJSON)
-        return weatherData
+        try? JSONDecoder().decode(JSONWeather.self, from: dataJSON).model
+    }
+    
+    private struct JSONWeather: Decodable {
+        let name: String
+        let main: JSONMain
+        
+        var model: Weather {
+            Weather(name: name, main: main.model)
+        }
+    }
+
+    private struct JSONMain: Decodable {
+        let temp: Double
+        let humidity: Int
+                
+        var model: Main {
+            Main(temp: temp, humidity: humidity)
+        }
     }
 }

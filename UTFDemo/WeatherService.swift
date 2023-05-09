@@ -49,12 +49,12 @@ struct WeatherService: WeatherServiceable {
                 return
             }
             
-            do {
-                let weatherData = try JSONDecoder().decode(Weather.self, from: data)
-                completion(.success(weatherData.main.temp))
-            } catch {
+            guard let weather = WeatherMapper.map(dataJSON: data) else {
                 completion(.failure(.jsonParsingError))
+                return
             }
+            
+            completion(.success(weather.main.temp))
         }
     }
 }
