@@ -7,12 +7,19 @@
 
 import Foundation
 
-struct WeatherData: Codable {
+struct WeatherData: Decodable {
     let name: String
     let main: Main
 }
 
-struct Main: Codable {
+struct Main: Decodable {
     let temp: Double
     let humidity: Int
+}
+
+enum WeatherDataMapper {
+    static func map(dataJSON: Data) -> WeatherData? {
+        let weatherData = try? JSONDecoder().decode(WeatherData.self, from: dataJSON)
+        return weatherData
+    }
 }
